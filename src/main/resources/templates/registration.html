@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        form {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 5px;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+         .user-menu {
+             position: fixed;
+             top: 20px;
+             right: 20px;
+             display: flex;
+             align-items: center;
+             background-color: #fff;
+             border: 1px solid #ccc;
+             border-radius: 5px;
+             padding: 10px;
+             cursor: pointer;
+         }
+
+        .user-menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .user-menu:hover .user-menu-dropdown {
+            display: block;
+        }
+
+        .user-menu-dropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .user-menu-dropdown a:hover {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+
+<div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="user-menu">
+    <span th:text="${#authentication.name}"></span> <span class="fas fa-caret-down"></span>
+    <div class="user-menu-dropdown">
+        <a href="/admin">Админ панель</a>
+        <a href="/user">Мой профиль</a>
+        <a href="/logout">Выход</a>
+    </div>
+</div>
+<div th:unless="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}" class="user-menu">
+    <span th:text="${#authentication.name}"></span> <span class="fas fa-caret-down"></span>
+    <div class="user-menu-dropdown">
+        <a href="/user">Мой профиль</a>
+        <a href="/logout">Выход</a>
+    </div>
+</div>
+
+<div th:if="${! #authorization.expression('isAuthenticated()')}">
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1>Регистрация</h1>
+        </div>
+    </div>
+
+    <form th:action="@{/registration}" th:object="${user}" th:method="post">
+
+        <label for="username">Username:</label>
+        <input type="text" th:field="*{username}" id="username">
+
+        <label for="email">Email:</label>
+        <input type="email" th:field="*{email}" id="email">
+
+        <label for="password">Password:</label>
+        <input type="password" th:field="*{password}" id="password">
+
+        <label for="firstName">First Name:</label>
+        <input type="text" th:field="*{firstName}" id="firstName">
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" th:field="*{lastName}" id="lastName">
+
+        <label for="age">Age:</label>
+        <input type="number" th:field="*{age}" id="age">
+
+        <div class="text-center">
+        <button type="submit" class="btn btn-primary">Создать</button>
+        </div>
+    </form>
+    <div class="text-center"> <a href="/login">
+        <button type="button" class="btn btn-primary">Отмена</button>
+    </a>
+    </div>
+</div>
+
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    <div class="text-center">
+        <p>Вы уже успешно авторизованы!</p>
+    </div>
+    <div class="text-center">
+        <a href="/user">
+            <button type="submit" class="btn btn-primary">Перейти к профилю</button>
+        </a>
+    </div>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

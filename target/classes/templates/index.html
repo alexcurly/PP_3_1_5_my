@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .user-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .user-menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .user-menu:hover .user-menu-dropdown {
+            display: block;
+        }
+
+        .user-menu-dropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .user-menu-dropdown a:hover {
+            background-color: #eee;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="user-menu">
+    <span th:text="${#authentication.name}"></span> <span class="fas fa-caret-down"></span>
+    <div class="user-menu-dropdown">
+        <a href="/admin">Админ панель</a>
+        <a href="/user">Мой профиль</a>
+        <a href="/logout">Выход</a>
+    </div>
+</div>
+<div th:unless="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+     th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}" class="user-menu">
+    <span th:text="${#authentication.name}"></span> <span class="fas fa-caret-down"></span>
+    <div class="user-menu-dropdown">
+        <a href="/user">Мой профиль</a>
+        <a href="/logout">Выход</a>
+    </div>
+</div>
+<div th:if="${! #authorization.expression('isAuthenticated()')}" class="user-menu">
+    <span class="text-decoration-none">
+  <span>Авторизация</span>
+  <span class="fas fa-caret-down"></span>
+</span>
+    <div class="user-menu-dropdown">
+        <a href="/login">Войти</a>
+        <a href="/registration">Зарегистрироваться</a>
+    </div>
+</div>
+<div class="flex justify-center">
+    <div class="text-center">
+        <h1 class="display-5 mb-4 font-weight-bold">Сайт по продаже слонов, покупайте наших слонов!</h1>
+        <div class="flex justify-center space-x-8">
+            <div>
+        <pre class="text-lg font-mono">
+                            _,.---""----.,_
+                         .-' __.----...---.;
+                       .'  .'               `'.
+                      /  .'                    '.
+                     /  /                  `'",  `\
+                   .'_,' ,"`                       `'.
+                  /,'                       .-.       \
+                .'        .-.              /___\  (  . `,
+               /  .-'    /___\             |_  |   \  '. \
+              ;| /       |_  |             \_)_/   |    \ \
+              /| |   ;  _\_)_/             `   ,  /     |  \
+             / | |  /  ___   `  .-~`````~-. ,='   |     |  |
+            ;  \ \ /.-'   `-._              |    /|     |  \
+           .'``''--' _.-      `\            |  .'  \    |  |;
+          /         ' _,        \           |-`|   |    |  ||
+         /  /        /_\       /_\ .-~``~-. |  |   |   /   ||
+        |  |         \(/       |(|          |  /   |   |   ||
+       ,|  |        -~~`       ;`|   .---.  |  |   |   /   ||
+    .-/ |  |    /        .-~`~  \|  (     '.|  /   ;--/    /|
+   / /  |  \   |   -t-           | -~'-\    \  `--'  `-..-` ;
+  |/|   /   \  |`._  \      -~` /       |    \             /
+  /\|   | .--'  `\ `._`._      /        |-~` |            /
+  \/\   '.____,.-'    `""`-._.'    ~-. /     /       .' .'
+     \             .--._.-'`         .'`- _.'       (.-'
+      |           (       ,    ',_.-'`"""`          |
+      \   \     .-'  '-;---;..--'  /,----.y         |
+      |    '.   `.__,-'    /       |      |         |
+      |     |`-.,__,    Y  |       |      |         |
+      |  == | =|   |    |  |- ~ -. |      | .- ~ -. |
+      |     |  |   | == | =|~ - ~` |      | '~ - ~' |
+     /.-.-.-\-.-\  |    |  |       |      |         |
+     `""""""`""""`/.-.-.-\-.\-.-.-.-\    /.-.-.-.-.-.\
+                  `"""""""`""`-------'   '------------'
+ </pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
