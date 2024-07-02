@@ -11,6 +11,7 @@
 #### Ссылки:
 
 https://learn.javascript.ru/fetch
+
 https://habr.com/ru/company/otus/blog/440046/
 
 ### SQL request
